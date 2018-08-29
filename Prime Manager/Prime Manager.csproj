@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8B323417-6EAF-4009-B9D6-123E6A1200F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Prime_Manager</RootNamespace>
+    <AssemblyName>Prime Manager</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Item.cs" />
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Parse.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relic.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="UI.cs" />
+    <Content Include="PrimeManagerToParse.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Images\Relics\Neo.png" />
+    <None Include="Images\Relics\Meso.png" />
+    <None Include="Images\Relics\Lith.png" />
+    <None Include="Images\Relics\Axi.png" />
+    <None Include="Images\Primes\Odonata.png" />
+    <None Include="Images\Primes\Euphona.png" />
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Content Include="Data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\Items\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Akbolto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Aklex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Akstiletto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Ankyros.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Archwing Suit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Ash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Ballistica.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Banshee.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Bo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Boar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Boltor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Braton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Bronco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Burston.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Carrier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Cernos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Dakra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Destreza.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Dual Broncos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Dual Kamas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Ember.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Euphora.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Fang.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Fragor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Frost.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Galatine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Glaive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Helios.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Hikou.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Hydroid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Kavasa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Kogake.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Kronen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Latron.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Lex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Limbo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Loki.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Mag.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Mirage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Nami Skyla.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Nekros.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Nikana.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Nova.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Nyx.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Oberon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Orthos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Paris.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Pyrana.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Reaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Rhino.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Saryn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Scindo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Sicarus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Silva &amp; Aegis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Soma.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Spira.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Sybaris.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Tiberon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Tigris.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Trinity.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Valkyr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Vasto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Vauban.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Vectis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Venka.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Volt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Wyrm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Primes\Zephyr.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
