@@ -11,10 +11,6 @@ namespace Prime_Manager
         {
             InitializeComponent();
 
-            Storage.Initilize();
-
-            Parse.JsonData(Storage.JsonFilepath);
-
             Item_Filter_Text_Name.Focus();
             Item_Filter_Text_Name.GotFocus += new EventHandler(Item_Filter_Text_Name_GotGocus);
             Item_Filter_Text_Name.LostFocus += new EventHandler(Item_Filter_Text_Name_LostFocus);

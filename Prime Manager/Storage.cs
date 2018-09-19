@@ -7,6 +7,7 @@ namespace Prime_Manager
 {
     class Storage
     {
+        public static settings Settings = new settings();
         public static List<Relic> Relics = new List<Relic>();
         public static List<Item> Items = new List<Item>();
         public static List<string> Types = new List<string>();
@@ -21,6 +22,10 @@ namespace Prime_Manager
             public IList<Item> PrimeItems { get; set; }
             public IList<Relic> Relics { get; set; }
 
+        }
+
+        public class settings {
+            public bool StopTimer { get; set; }
         }
 
         public static void DumpRelics()
@@ -89,7 +94,7 @@ namespace Prime_Manager
             Types.Add("Secondary");
             Types.Add("Melee");
             Types.Add("Sentinel");
-            Types.Add("Odonata");
+            Types.Add("Archwing");
             Types.Add("Misc");
 
             //Debug.WriteLine("Item types: ");

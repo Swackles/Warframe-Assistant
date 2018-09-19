@@ -4,6 +4,7 @@ namespace Prime_Manager
 {
     class Relic
     {
+        #region properties
         public string Name { get; set; }
         public int Id { get; set; }
         /*
@@ -11,10 +12,12 @@ namespace Prime_Manager
          * 1 - Meso
          * 2 - Neo
          * 3 - Axi
-         */
+        */
         public int Tier { get; set; }
         public IList<Item.Part> Parts { get; set; }
         public bool Vaulted { get; set; }
         public int Have { get; set; }
+        #endregion
+
     }
 }

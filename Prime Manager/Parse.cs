@@ -1,9 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using System.Drawing;
 using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Warframe;
+using IronOcr;
 
 namespace Prime_Manager
 {
@@ -142,7 +147,7 @@ namespace Prime_Manager
                         
                         part.Rarity = Storage.Rarities.IndexOf(words[i + 2]);
                         part.Needed = 1;
-                        try { part.PartId = item.Parts.Count; } catch (InvalidCastException e) { part.PartId = 0; }
+                        try { part.PartId = item.Parts.Count; } catch (InvalidCastException) { part.PartId = 0; }
 
                         item.Parts.Add(part);
 
@@ -157,7 +162,7 @@ namespace Prime_Manager
                             {                               
                                 relic.Name = words[i + 1];
 
-                                try { relic.Id = Storage.Relics.Count; } catch (InvalidCastException e) { relic.Id = 0; }
+                                try { relic.Id = Storage.Relics.Count; } catch (InvalidCastException) { relic.Id = 0; }
 
                                 relic.Tier = Storage.Tiers.IndexOf(words[i]);
 
@@ -190,7 +195,7 @@ namespace Prime_Manager
                                     relic.Vaulted = true;
                                     i = i + 4;
                                 }
-                            } catch(ArgumentException e)
+                            } catch(ArgumentException)
                             {
                                 relic.Vaulted = true;
                                 i = i + 4;
@@ -205,7 +210,7 @@ namespace Prime_Manager
                                 {
                                     break;
                                 }
-                            } catch (ArgumentException e)
+                            } catch (ArgumentException)
                             {
                                 break;
                             }
@@ -222,7 +227,7 @@ namespace Prime_Manager
                                 break;
                             }
                         }
-                        catch (ArgumentException e)
+                        catch (ArgumentException)
                         {
                             break;
                         }
@@ -250,6 +255,103 @@ namespace Prime_Manager
             Data.Relics = Storage.Relics;
 
             File.WriteAllText(filepath, JsonConvert.SerializeObject(Data));
+        }
+        #endregion
+
+        #region Get Primes & Relics from DE
+        public static void getPrimeFromDE()
+        {
+            foreach(warframe Warframe in warframe.Get("PRIME"))
+            {
+                warframe.DumpDebug(Warframe);
+
+                Item item = new Item()
+                {
+                    Name = Warframe.Name.ToLower(),
+                    Type = Storage.Types.IndexOf(Warframe.Type),
+                    Id = Storage.Items.Count,
+                    Constructed = false,
+                    Vaulted = false,
+                    Parts = new List<Item.Part>()
+                };
+
+                char Last = new char();
+
+                foreach(char character in Warframe.Name)
+                {                    
+                    if (Last.ToString() == "" || char.IsWhiteSpace(Last))
+                    {
+                        Warframe.Name.Replace(character, char.ToUpper(character));                        
+                    }
+
+                    Last = character;
+                }
+            }
+
+            IList<weapon> weaponList = weapon.Get("PRIME");
+            IList<relic> relicList = relic.Get();
+        }
+        #endregion
+
+        #region Get Market data
+
+        #endregion
+
+        #region Get Nexus data
+
+        #endregion
+
+        #region Read image data
+        public static string ReadImage(string application = "Warframe.x64")
+        {
+            Process proc;
+
+            try
+            {
+                proc = Process.GetProcessesByName(application)[0];
+            } catch (IndexOutOfRangeException error)
+            {
+                return "Application isn't running";
+            }
+
+            var rect = new User32.Rect();
+            User32.GetWindowRect(proc.MainWindowHandle, ref rect);
+                        
+            int width = rect.right - rect.left;
+            int height = rect.bottom - rect.top;
+
+            Bitmap bmp;
+
+            try
+            {
+                bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            } catch (ArgumentException error) {
+                return "Something wrong with the window";
+            }
+                        
+            Graphics graphics = Graphics.FromImage(bmp);
+            graphics.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+
+            var Ocr = new AutoOcr();
+
+            OcrResult result = Ocr.Read(bmp);
+
+            return result.Text;
+        }
+
+        private class User32
+        {
+            [StructLayout(LayoutKind.Sequential)]
+            public struct Rect
+            {
+                public int left;
+                public int top;
+                public int right;
+                public int bottom;
+            }
+
+            [DllImport("user32.dll")]
+            public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
         }
         #endregion
     }

@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
+
 namespace Warframe
 {
-    class relic
+    public class relic
     {
         #region properties
         public string Name { get; set; }
@@ -30,8 +31,6 @@ namespace Warframe
         #region Methods
         public static IList<relic> Get()
         {
-            Debug.WriteLine(Double.Parse("19.941176470588236"));
-
             // Request.   
             WebRequest request = WebRequest.Create("http://content.warframe.com/MobileExport/Manifest/ExportRelicArcane.json");
             request.Credentials = CredentialCache.DefaultCredentials;
@@ -53,8 +52,8 @@ namespace Warframe
                 {
                     Name = RelicData["name"].ToString().Remove(RelicData["name"].ToString().IndexOf(" "), RelicData["name"].ToString().Length - RelicData["name"].ToString().IndexOf(" ")),
                     Description = RelicData["description"].ToString(),
-                    Parts = new List<part>(),
-                    CodexSecret = bool.Parse(RelicData["codexSecret"].ToString())
+                    CodexSecret = bool.Parse(RelicData["codexSecret"].ToString()),
+                    Parts = new List<part>()
                 };
 
                 relic.Tier = RelicData["name"].ToString().Remove(relic.Name.Length, RelicData["name"].ToString().IndexOf(" RELIC"));
@@ -65,10 +64,23 @@ namespace Warframe
                     {
                         Count = ushort.Parse(partData["itemCount"].ToString()),
                         Rarity = partData["rarity"].ToString(),
-                        Tier = ushort.Parse(partData["Tier"].ToString())
+                        Tier = ushort.Parse(partData["tier"].ToString())
                     };
 
-                    Part.Name = partData["rewardName"].ToString().Remove(0, partData["rewardName"].ToString().LastIndexOf("/") + 1);
+                    Part.Name = partData["rewardName"].ToString().Remove(0, partData["rewardName"].ToString().LastIndexOf("/") + 1).Replace("Prime", " ");
+
+                    if (Part.Name.Contains("Blueprint")) { Part.Name = Part.Name.Replace("Blueprint", " "); }
+
+                    Char[] charaters = Part.Name.ToCharArray();
+
+                    for (int i = 1; i < charaters.Length; i++)
+                    {
+                        if (Char.IsUpper(charaters[i]))
+                        {
+                            if (char.IsWhiteSpace(charaters[i - 1])) { continue; }
+                            Part.Name = Part.Name.Replace(charaters[i].ToString(), " "+charaters[i].ToString());
+                        }
+                    }
 
                     relic.Parts.Add(Part);
                 });
@@ -88,11 +100,13 @@ namespace Warframe
             Debug.WriteLine("   Description: " + Relic.Description);
             Debug.WriteLine("   Parts: {");
             foreach (part Part in Relic.Parts)
-            {                
-                Debug.WriteLine("       Name: " + Part.Name);
-                Debug.WriteLine("       Count: " + Part.Count);
-                Debug.WriteLine("       Rarity: " + Part.Rarity);
-                Debug.WriteLine("       Tier: " + Part.Tier);
+            {
+                Debug.WriteLine("       [");
+                Debug.WriteLine("           Name: " + Part.Name);
+                Debug.WriteLine("           Count: " + Part.Count);
+                Debug.WriteLine("           Rarity: " + Part.Rarity);
+                Debug.WriteLine("           Tier: " + Part.Tier);
+                Debug.WriteLine("       ],");
             }
             Debug.WriteLine("   }");
             Debug.WriteLine("}");

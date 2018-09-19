@@ -35,6 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronOcr, Version=4.4.0.21181, Culture=neutral, PublicKeyToken=5f366048dc436899, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronOcr.4.4.0\lib\net40\IronOcr.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -91,6 +94,7 @@
     <Content Include="Data.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Items\" />
+    <Folder Include="Properties\DataSources\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +316,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\Primes\Zephyr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Market\Market.csproj">
+      <Project>{51a34180-e89f-4e84-8008-ba11b1f047b0}</Project>
+      <Name>Market</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nexus\Nexus.csproj">
+      <Project>{eefe51e1-1e3c-40e6-844a-61095c9c3e57}</Project>
+      <Name>Nexus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warframe\Warframe.csproj">
+      <Project>{b59bf6b4-53d6-44e0-8810-729f64f968bd}</Project>
+      <Name>Warframe</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
