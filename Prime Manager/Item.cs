@@ -35,6 +35,26 @@ namespace Prime_Manager
             public int Rarity { get; set; }
             public int Needed { get; set; }
             public int Have { get; set; }
+            public market Market { get; set; }
+            public nexus Nexus { get; set; }
+
+            public class market {
+                public int Median { get; set; }
+                public int MinPrice { get; set; }
+                public int MaxPrice { get; set; }
+            }
+
+            public class nexus {
+                
+                public values Buying { get; set; }
+                public values Selling { get; set; }
+
+                public class values {
+                    public ushort? Max { get; set; }
+                    public double? Median { get; set; }
+                    public ushort? Min { get; set; }
+                }               
+            }
 
 
             public static void More(Item.Part part, Label label)

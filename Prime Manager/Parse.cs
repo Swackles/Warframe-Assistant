@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Diagnostics;
@@ -9,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Warframe;
 using IronOcr;
+using Market;
+using Nexus;
 
 namespace Prime_Manager
 {
@@ -241,7 +244,7 @@ namespace Prime_Manager
         }
         #endregion
 
-        #region Date to Json
+        #region Data to Json
         public static void DataJson(string filepath)
         {
             Debug.WriteLine("DataJson");
@@ -267,7 +270,6 @@ namespace Prime_Manager
 
                 Item item = new Item()
                 {
-                    Name = Warframe.Name.ToLower(),
                     Type = Storage.Types.IndexOf(Warframe.Type),
                     Id = Storage.Items.Count,
                     Constructed = false,
@@ -281,7 +283,7 @@ namespace Prime_Manager
                 {                    
                     if (Last.ToString() == "" || char.IsWhiteSpace(Last))
                     {
-                        Warframe.Name.Replace(character, char.ToUpper(character));                        
+                        item.Name += char.ToUpper(character).ToString();                        
                     }
 
                     Last = character;
@@ -294,16 +296,70 @@ namespace Prime_Manager
         #endregion
 
         #region Get Market data
+        public static Item GetMarket(Item item) {
 
+            Parallel.ForEach(Item.Part, item (partData, item) => {
+                Ilist<order> MarketData = Market.order.GetItemOrders(item.Name, partData.Name);
+
+                IList<ushort> Prices = new Ilist<ushort>(); 
+
+                Parallel.ForEach(MarketData, marketData  => {
+
+                    if (marketData.User.Status != "ingame") { return };
+                    
+                    for (byte i = 0; i < marketData.quantity; i++) {
+                        Prices.Add(marketData.Prices);
+                    }
+                });
+
+                Prices = Prices.OrderBy(i => i);
+
+                partData.Market = new Item.Market() {
+                    MinPrice = Prices[0],
+                    MaxPrice = Prices[Prices.Count]
+                };
+                
+                if ( Prices[Prices.Count / 2]%2 == 0 ) {
+                    partData.Market.Median = (Prices[Prices.Count / 2] + Prices[Prices.Count / 2 + 1]) / 2;
+                } else {
+                    partData.Market.Median = Prices[Prices.Count / 2];
+                }
+            });
+
+            return item;
+        }
         #endregion
 
         #region Get Nexus data
+        public static Item getNexus(Item item) {
+            nexus = nexus.GetPrimeStatistics(item.Name);
 
+            Parallel.foreach(item, nexus.Components ,(item, component) => {
+                part = item.Parts.Find(x => x.Name == component.Name);
+
+                part.Nexus == new part.nexus();
+
+                part.Nexus.Buying == new part.nexus.values(){
+                    median = component.Buying.Median,
+                    max = component.Buying.Max,
+                    min = component.Buying.Min
+                };
+
+                part.Selling.Buying == new part.nexus.values(){
+                    median = component.Selling.Median,
+                    max = component.Selling.Max,
+                    min = component.Selling.Min
+                };
+            });
+
+            return item;
+        }
         #endregion
 
         #region Read image data
-        public static string ReadImage(string application = "Warframe.x64")
+        public static void ReadImage(string application = "Warframe.x64")
         {
+            /*
             Process proc;
 
             try
@@ -311,7 +367,7 @@ namespace Prime_Manager
                 proc = Process.GetProcessesByName(application)[0];
             } catch (IndexOutOfRangeException error)
             {
-                return "Application isn't running";
+                return ";
             }
 
             var rect = new User32.Rect();
@@ -331,12 +387,32 @@ namespace Prime_Manager
                         
             Graphics graphics = Graphics.FromImage(bmp);
             graphics.CopyFromScreen(rect.left, rect.top, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
-
+            */
             var Ocr = new AutoOcr();
 
-            OcrResult result = Ocr.Read(bmp);
+            OcrResult result = Ocr.Read("http://images.akamai.steamusercontent.com/ugc/177160601660790984/75EC368F67FE5E0E0C3A2AEA20B1D49D1F79ACDF/");
 
-            return result.Text;
+            string TextInImage = result.ToString();
+
+            Debug.WriteLine(TextInImage);
+
+            if (TextInImage.Contains("Select a reward")) {
+                Debug.WriteLine("true");
+
+                string[] values = TextInImage.Split(" ");             
+                
+                Item.Part[] Parts = new Item.Part[](); 
+
+                for (int i = 0; i < values.Count; i++) {
+                    if (values[i].ToLower() == "prime") {
+                        Item item = Storage.Items.Find(x => x.Name == values[0 - 1]);
+                        
+                        Item.Part = item.Parts.Find(x => x.Name == values[0 + 1]);
+
+                        Debug.WriteLine("Found item: "+item.Name+" Prime "+part.Name);
+                    }
+                }
+            }
         }
 
         private class User32

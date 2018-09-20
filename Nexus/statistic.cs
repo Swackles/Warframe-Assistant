@@ -28,7 +28,6 @@ namespace Nexus
 
         public class satistics
         {
-            #region Properties
             public double? Avg { get; set; }
             public IList<satistics> Intervals { get; set; }
             public ushort? Max { get; set; }
@@ -36,24 +35,19 @@ namespace Nexus
             public ushort? Min { get; set; }
             public info Offers { get; set; }
             public decimal? PriceAccuracy { get; set; }
-            #endregion
         }
 
         public class info
         {
-            #region Properties
             public int? Count { get; set; }
             public int? HasVaule { get; set; }
             public decimal? Percentage { get; set; }
-            #endregion
         }
         #endregion
 
         #region Methods
         public static nexus GetPrimeStatistics(string Item)
         {
-            Debug.WriteLine(Double.Parse("19.941176470588236"));
-
             string ItemName = (Item + "%20prime").ToLower();
 
             // Request.   

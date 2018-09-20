@@ -123,3 +123,39 @@ namespace Prime_Manager
         
     }
 }
+
+namespace Prime_Manager {
+    public static class extentions {
+        public static Item findByName(this List<Item> items, string find) {
+            return items.Find(X => x.Name == find);
+        }
+
+        public static Item findById(this List<Item> items, int find) {
+            return items.Find(x => x.Id == find);
+        }
+
+        public static List<Item> findByType(this List<Item> items, int find) {
+            
+            IList<Item> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                if (item.Type == find) { result.Add(item); }
+            });
+
+            return result;
+        }
+
+        public static List<Item> findByType(this List<Item> items, string find) {
+
+            int find = Storage.Types.IndexOf()
+            
+            IList<Item> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                if (item.Type == find) { result.Add(item); }
+            });
+
+            return result;
+        }
+    }
+}
