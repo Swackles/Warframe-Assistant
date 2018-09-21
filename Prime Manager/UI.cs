@@ -544,9 +544,7 @@ namespace Prime_Manager
 
         #endregion
 
-
-
-        #region REmove items from Item_Container
+        #region Remove items from Item_Container
         public static void DisposeItems()
         {
             
@@ -558,13 +556,27 @@ namespace Prime_Manager
         }
         #endregion
 
-        #region REmove relics from Relic_Container
+        #region Remove relics from Relic_Container
         public static void DisposeRelics()
         {
             foreach (Panel panel in Main.ActiveForm.Controls.Find("Relic_Collection", true))
             {
                 panel.Dispose();
             }
+
+        }
+        #endregion
+
+        #region Mission success confirmation
+        public static void SuccessConfirm(List<Item.Part> parts) {
+            Parallel.foreach(parts, part => {
+                
+            });
+        }
+        #endregion
+
+        #region Mission reward confirmation
+        public static void RewardConfirm(List<Item.Part> parts) {
 
         }
         #endregion

@@ -392,26 +392,83 @@ namespace Prime_Manager
 
             OcrResult result = Ocr.Read("http://images.akamai.steamusercontent.com/ugc/177160601660790984/75EC368F67FE5E0E0C3A2AEA20B1D49D1F79ACDF/");
 
-            string TextInImage = result.ToString();
+            string[] TextInImage = result.ToString().Split(" ");
 
-            Debug.WriteLine(TextInImage);
+            TextInImage = TextInImage.Select(x => x.ToLowerInvariant());
 
-            if (TextInImage.Contains("Select a reward")) {
-                Debug.WriteLine("true");
-
-                string[] values = TextInImage.Split(" ");             
+            if (TextInImage.Contains("Select") && TextInImage.Contains("Reward")) {
+                Debug.WriteLine("Select a Reward");
                 
+                GameData gameData = new GameData(){
+                    Event = 0,
+                    partsFound = new List<Item.Part>(),
+                }
+
                 Item.Part[] Parts = new Item.Part[](); 
 
                 for (int i = 0; i < values.Count; i++) {
                     if (values[i].ToLower() == "prime") {
                         Item item = Storage.Items.Find(x => x.Name == values[0 - 1]);
-                        
-                        Item.Part = item.Parts.Find(x => x.Name == values[0 + 1]);
+                        Item.Part part = item.Parts.Find(x => x.Name == values[0 + 1]);
 
-                        Debug.WriteLine("Found item: "+item.Name+" Prime "+part.Name);
+                        if (gameData.partsFound.Any(x => x.Id == part.Id)) {
+                            partsFound.YouPick = part;
+
+                            continue;
+                        } else {
+                            gameData.partsFound.Add(part);
+
+                            continue;
+                        }                      
+                        
+                    } else if (values[i].ToLower() == "form") {
+                        Item.Part part = new Item.Part() {
+                            Name = forma
+                        };
+
+                        gameData.partsFound.Add(part);
                     }
                 }
+
+                Debug.WriteLine("Items Found: ")
+                foreach(Item.Part item in gameData.partsFound) {
+                    Debug.WriteLine("Name: "+item.Name);
+                }
+
+                GameData.SuccessHandler(gameData);
+
+            } else if (TextInImage.Contains("mission") && TextInImage.Contains("complete")) {
+                Debug.WriteLine("Mission Complete");
+                
+                GameData gameData = new GameData(){
+                    Event = 1,
+                    partsFound = new List<Item.Part>(),
+                }
+
+                Item.Part[] Parts = new Item.Part[](); 
+
+                for (int i = 0; i < values.Count; i++) {
+                    if (values[i].ToLower() == "prime") {
+                        Item item = Storage.Items.Find(x => x.Name == values[0 - 1]);
+                        Item.Part part = item.Parts.Find(x => x.Name == values[0 + 1]);
+
+                        if (gameData.partsFound.Any(x => x.Id == part.Id)) {
+                            partsFound.YouPick = part;
+
+                            continue;
+                        } else {
+                            gameData.partsFound.Add(part);
+
+                            continue;
+                        }                        
+                    }
+                }
+
+                Debug.WriteLine("Items Found: ")
+                foreach(Item.Part item in gameData.partsFound) {
+                    Debug.WriteLine("Name: "+item.Name);
+
+                GameData.SuccessHandler(gameData);
             }
         }
 
@@ -430,5 +487,29 @@ namespace Prime_Manager
             public static extern IntPtr GetWindowRect(IntPtr hWnd, ref Rect rect);
         }
         #endregion
+    }
+}
+
+namespace Prime_Manager
+{
+    publi class GameData {
+        // 0 - Nothing
+        // 1 - Reward Selection
+        // 2 - Mission Complete
+        public byte Event { get; set; }
+        public IList<Item.Part> partsFound { get; set; }
+        public Item.Part YouPick { get; set; }
+
+        public static void SuccessHandler(GameData gamedata) {
+            switch (gameData.Event)
+            {
+                case 0: 
+                    
+                case 1:
+
+                default:
+                    throw new System.ArgumentException("Unknown case: "+gameData.Event);
+            }
+        }
     }
 }

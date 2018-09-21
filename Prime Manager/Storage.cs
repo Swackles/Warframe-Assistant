@@ -126,8 +126,15 @@ namespace Prime_Manager
 
 namespace Prime_Manager {
     public static class extentions {
-        public static Item findByName(this List<Item> items, string find) {
-            return items.Find(X => x.Name == find);
+
+        public static List<Item> findByName(this List<Item> items, string find) {
+            IList<item> result = new List<Item>();
+
+            Parallell.foreach((item, find), (item, find) => {
+                if (item.Name.Contains(find)) { result.Add(item); }
+            });
+
+            return result;
         }
 
         public static Item findById(this List<Item> items, int find) {
@@ -157,5 +164,59 @@ namespace Prime_Manager {
 
             return result;
         }
+
+        public static List<Item> findByType(this List<Item> items, id find) {
+
+            if(find Storage.Types.Count) { throw new ArgumentException("Id "+find+" is out of range"); }
+            
+            IList<Item> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                if (item.Type == find) { result.Add(item); }
+            });
+
+            return result;
+        }
+
+        public static List<Item> findByConstructed(this List<Item> items, bool find) {
+            IList<Item> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                if (item.Constructed == find) { result.Add(item); }
+            });
+            
+            return result;
+        }
+
+        public static List<Item> findByVaulted(this List<Item> items, bool find) {
+            IList<Item> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                if (item.Vaulted == find) { result.Add(item); }
+            });
+            
+            return result;
+        }
+
+        public static List<Part> findPartByName(this List<Item> items, string find) {
+            IList<Part> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                foreach(Item.Part part in item.Parts) {
+                    if(part.Name == find) { result.Add(part); }
+                }
+            });
+        }
+
+        public static List<Part> findPartNameS(this List<Item> items, string find) {
+            IList<Part> result = new List<Item>();
+
+            Parallell.foreach((items, find), (item, find) => {
+                result.Add(item.Parts.find(x => x.Name == find));
+            });
+        }
+
+
+
     }
 }
